@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalesController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [HomeController::class, 'index']);
 
 Route::prefix('category')->group(function() {
     Route::get('/food-beverage', [ProductController::class, 'foodBeverage']);
