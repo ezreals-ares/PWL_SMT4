@@ -24,7 +24,9 @@ class UserController extends Controller
 
     $activeMenu = 'user';
 
-    return view('user.index', ['breadcrumb' => $breadcrumbs, 'page' => $page, 'activeMenu' => $activeMenu]);
+    $level = LevelModel::all();
+
+    return view('user.index', ['breadcrumb' => $breadcrumbs, 'page' => $page, 'level' => $level, 'activeMenu' => $activeMenu]);
     
   }
 
@@ -38,6 +40,10 @@ class UserController extends Controller
             'level_id'
         )
         ->with('level');
+    
+    if ($request->level_id) {
+        $users->where('level_id', $request->level_id);
+    }
 
     return DataTables::of($users)
         // Menambahkan kolom index / nomor urut (DT_RowIndex)
