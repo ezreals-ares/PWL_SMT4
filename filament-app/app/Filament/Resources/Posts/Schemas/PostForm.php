@@ -11,7 +11,6 @@ use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Components\TagsInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Group;
 
@@ -65,7 +64,12 @@ class PostForm
                 Section::make('Meta Information')
                     ->icon('heroicon-o-cog')
                     ->schema([
-                        TagsInput::make('tags'),
+                        Select::make('tags')
+                            ->label('Tags')
+                            ->relationship('tags', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
                         Checkbox::make('published'),
                         DateTimePicker::make('published_at'),
                     ]),
