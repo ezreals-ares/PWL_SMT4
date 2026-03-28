@@ -26,13 +26,19 @@ class PostForm
                     ->columns(2)
                     ->schema([
                         TextInput::make('title')
-                            ->required()
-                            ->minLength(5)
-                            ->columnSpan('full'),
+                            ->rules('required | min:5 | max:10')
+                            ->validationMessages([
+                                'min' => 'Title minimal 5 karakter.',
+                            ]),
                         TextInput::make('slug')
-                            ->required()
-                            ->unique(ignoreRecord: true),
+                            ->rules('required|min:3')
+                            ->unique(ignoreRecord: true)
+                            ->validationMessages([
+                                'min' => 'Slug minimal 3 karakter.',
+                                'unique' => 'Slug harus unik.',
+                            ]),
                         Select::make('category_id')
+                            ->required()
                             ->relationship('category', 'name')
                             ->preload()
                             ->searchable(),
@@ -42,17 +48,18 @@ class PostForm
                 Section::make('Content')
                     ->icon('heroicon-o-pencil')
                     ->schema([MarkdownEditor::make('content')]),
+            ])->columnSpan(2),
 
+            Group::make([
                 Section::make('Image Upload')
                     ->icon('heroicon-o-photo')
                     ->schema([
                         FileUpload::make('image')
+                            ->required()
                             ->disk('public')
                             ->directory('posts'),
                     ]),
-            ])->columnSpan(2),
 
-            Group::make([
                 Section::make('Meta Information')
                     ->icon('heroicon-o-cog')
                     ->schema([
